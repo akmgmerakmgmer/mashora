@@ -9,11 +9,11 @@
       <div class="d-flex flex-lg-row flex-column">
         <div class="d-flex justify-content-between">
           <img class="img1 mt-2 mb-lg-0 mb-2 mr-5" src="~/assets/logo2.png"/>
-          <i class="fa fa-bars mt-6 ml-5 icon2 d-lg-none d-block" @click="burger" aria-hidden="true"></i>
+          <i class="fa fa-bars mt-7 ml-5 icon2 d-lg-none d-block" @click="burger" aria-hidden="true"></i>
         </div>
         <div class="py-lg-7 py-2 mr-lg-0 mr-10 d-lg-block d-none" id="nav-list">
-          <ul class="d-flex flex-lg-row flex-column">
-            <li class="mt-lg-0 mt-2" v-for="item in listitems" :key="item">{{item}}</li>
+          <ul class="d-flex">
+            <li v-for="item in listitems" :key="item">{{item}}</li>
           </ul>
         </div>
       </div>
@@ -23,10 +23,52 @@
         <button class="px-15">تسجيل الدخول</button>
       </div>
     </div>
+    <div class="overlay" v-if="draweron" @click="removeOverlay"></div>
+    <div class="drawer transform" id="drawer">
+      <ul class="">
+        <li class="mt-5 mx-4" v-for="item in listitems" :key="item">{{item}}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.overlay{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($color: #000000, $alpha: 0.5);
+  z-index: 999999;
+}
+ul{
+  li{
+    margin-left: 15px;
+    font-size: 17.5px;
+    cursor: pointer;
+    color: rgba($color: #000000, $alpha: 0.7);
+  }
+}
+.transform{
+  transform: translateX(105%);
+  @media (min-width: 500px){
+    transform: translateX(105%) !important;
+  }
+}
+.drawer{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 250px;
+  background: white;
+  box-shadow: 5px 10px 18px rgba($color: #000000, $alpha: 0.5);
+  z-index: 9999999999999999999;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
 .img1{
   width: 110px;
   height: 60px;
@@ -47,14 +89,6 @@
 }
 .nav2{
   border-bottom: 1px solid rgba($color: #0000, $alpha: 0.2);
-  color: rgba($color: #000000, $alpha: 0.7);
-  ul{
-    li{
-      margin-left: 15px;
-      font-size: 17.5px;
-      cursor: pointer;
-    }
-  }
   .icon2{
     cursor: pointer;
     font-size: 20px;
@@ -76,14 +110,20 @@ export default {
 
   data(){
     return{
+      draweron:false,
       listitems:['الصفحة الرئيسية','منتاجتنا','مقياس الاستدامة المالية','حول المقياس','من نحن','تواصل معنا','الاسئلة الشائعة'],
       display:'d-none'
     }
   },
   methods:{
     burger(){
-      document.getElementById('nav-list').classList.toggle("d-none")
+      document.getElementById('drawer').classList.toggle('transform')
+      this.draweron=true
     },
+    removeOverlay(){
+      this.draweron=false
+      document.getElementById('drawer').classList.toggle('transform')
+    }
   }
 }
 </script>
